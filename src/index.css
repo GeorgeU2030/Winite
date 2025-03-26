@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+@font-face {
+    font-family: 'Fortnite';
+    src: local('SFUI'),
+         url('./assets/fonts/fortnite.otf') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; 
+}
+
+@theme {
+    --font-fortnite: "Fortnite", sans-serif;
+}
