@@ -1,10 +1,21 @@
 import { useState } from "react";
 import { useEffect } from "react"
 import { createSeason, getSeasons } from "../services/season";
+import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
 
     const [seasons, setSeasons] = useState([]);
+
+    const navigate = useNavigate();
+
+    const goSkins = () => {
+        navigate("/skin");
+    }
+
+    const goSeasons = () => {
+        navigate("/");
+    }
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [formData, setFormData] = useState({
@@ -42,11 +53,11 @@ export const Home = () => {
                     <img src="/fortnite.webp" alt="logo" className="h-20 w-20" />
                 </div>
                 <ul className="flex justify-center items-center space-x-4 mr-16">
-                    <li className="text-white w-24 font-bold">
-                        <a href="/">Seasons</a>
+                    <li className="text-white w-24 font-bold cursor-pointer">
+                        <a onClick={goSeasons}>Seasons</a>
                     </li>
-                    <li className="text-white w-24 font-bold">
-                        <a href="/skins">Skins</a>
+                    <li className="text-white w-24 font-bold cursor-pointer">
+                        <a onClick={goSkins}>Skins</a>
                     </li>
                 </ul>
             </nav>
