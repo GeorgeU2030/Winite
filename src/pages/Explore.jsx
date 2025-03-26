@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { searchSkin } from "../services/fortnite";
+import { createSkin } from "../services/skin";
 
 export const Explore = () => {
 
@@ -27,7 +28,17 @@ export const Explore = () => {
         })
     }
 
-    console.log(skins)
+    const addSkin = () => {
+        const skin = {
+            name: skins.name,
+            image: skins.images.icon,
+            totalWins: 0
+        }
+        createSkin(skin).then(data => {
+            navigate("/skin");
+        })
+    }
+
 
     return (
         <div className="min-h-screen bg-black">
@@ -60,6 +71,11 @@ export const Explore = () => {
                             <div key={skins.id} className="bg-[#2b2b2b] rounded-xl p-4">
                                 <img src={skins.images.icon}/>
                                 <h1 className="text-white font-bold text-xl text-center mt-4">{skins.name}</h1>
+                                <div className="flex justify-center mt-4">
+                                    <button className="font-bold text-white w-32 bg-sky-600 p-2 cursor-pointer rounded-xl"
+                                    onClick={addSkin}
+                                    >+ Skin</button>
+                                </div>
                             </div>
                         </div>
                     ): (

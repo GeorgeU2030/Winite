@@ -27,7 +27,6 @@ export const Home = () => {
     useEffect(() => {
         getSeasons().then(data => {
             setSeasons(data);
-            console.log(data);
         });
     }, []);
 

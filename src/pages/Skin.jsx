@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getSkins } from "../services/skin";
 
 export const Skin = () => {
 
@@ -15,6 +17,14 @@ export const Skin = () => {
     const goExplore = () => {
         navigate("/explore");
     }
+
+    const [skins, setSkins] = useState();
+
+    useEffect(() => {
+        getSkins().then(data => {
+            setSkins(data);
+        })
+    },[])
 
     return (
         <div className="min-h-screen bg-black">
@@ -36,6 +46,18 @@ export const Skin = () => {
                 <button className="font-bold text-white mr-16 w-48 bg-sky-600 p-2 cursor-pointer rounded-xl"
                 onClick={goExplore}
                 >Add Skins</button>
+            </section>
+
+            <section className="w-full flex justify-center mt-8">
+                <div className="w-11/12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-8">
+                    {skins && skins.map(skin => (
+                        <div key={skin.id} className="w-full flex flex-col justify-center items-center bg-[#1b1b1b] p-4 rounded-xl">
+                            <img src={skin.image} alt={skin.name} className="h-48 w-48 bg-sky-600 rounded-lg" />
+                            <h1 className="text-white text-center font-bold text-xl mt-2">{skin.name}</h1>
+                            <p className="text-white text-center font-fortnite text-3xl mt-2">{skin.totalWins} W</p>
+                        </div>
+                    ))}
+                </div>
             </section>
         </div>
     );
