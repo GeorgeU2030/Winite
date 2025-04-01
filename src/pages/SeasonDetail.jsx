@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getOneSeason } from "../services/season";
+import { updateWins } from "../services/skin";
 
 export const SeasonDetail = () => {
 
@@ -23,6 +24,24 @@ export const SeasonDetail = () => {
         navigate(`/explore?source=${seasonId}`);
     }
 
+    const updateSkinsWins = (skin) => {
+        const updateForm = {
+            id: skin.id,
+            wins: skin.wins + 1
+        }
+        updateWins(updateForm).then(data => {
+            setSkins(skins.map(s => {
+                if (s.id === skin.id) {
+                    return {
+                        ...s,
+                        wins: s.wins + 1
+                    }
+                }
+                return s;
+            }))
+        })
+    }
+
     useEffect(() => {
         if (seasonId === undefined || seasonId === null) {
             navigate("/");
@@ -33,7 +52,7 @@ export const SeasonDetail = () => {
                 setSkins(data.skinSeason);
             })
         }
-    },[])
+    },[skins])
 
     return (
         <div className="min-h-screen bg-black">
@@ -72,6 +91,11 @@ export const SeasonDetail = () => {
                                 <img src={skin.image} alt={skin.name} className="h-48 w-48 bg-sky-600 rounded-lg" />
                                 <h1 className="text-white text-center font-bold text-xl mt-2">{skin.name}</h1>
                                 <p className="text-white text-center font-fortnite text-3xl mt-2">{skin.wins} W</p>
+                                <button className="bg-yellow-300 text-black font-bold p-2 rounded-xl mt-4 cursor-pointer"
+                                onClick={() => updateSkinsWins(skin)}
+                                >
+                                    + W
+                                </button>
                             </div>
                         ))}
                     </div>
