@@ -15,7 +15,7 @@ export const Skin = () => {
     }
 
     const goExplore = () => {
-        navigate("/explore");
+        navigate("/explore?source=skin");
     }
 
     const [skins, setSkins] = useState();

@@ -30,3 +30,18 @@ export const createSeason = async (formData) => {
         console.error(error);
     }
 }
+
+export const getOneSeason = async (seasonId) => {
+    try {
+        const response = await fetch(`${API_URL}/seasons/${seasonId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        return data;
+    }catch(error) {
+        console.error(error);
+    }
+}

@@ -31,6 +31,11 @@ export const Home = () => {
     }, []);
 
 
+    const goToDetails = (seasonId) => {
+        navigate(`/seasons/${seasonId}`);
+    }
+
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -69,7 +74,7 @@ export const Home = () => {
             <section className="w-full flex justify-center mt-8">
                 <div className="w-11/12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {seasons.map(season => (
-                        <div key={season.id} className="bg-[#2b2b2b] rounded-xl p-4">
+                        <div key={season.id} className="bg-[#2b2b2b] rounded-xl p-4 cursor-pointer" onClick={() => goToDetails(season.id)}>
                             <img src={season.image} alt={season.title} className="w-full h-60 object-cover rounded-xl" />
                             <h1 className="text-white font-bold mt-4">{season.title}</h1>
                             <p className="text-white mt-2">{season.wins}</p>

@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { searchSkin } from "../services/fortnite";
-import { createSkin } from "../services/skin";
+import { createSkin, createSkinSeason, getSkinbyName } from "../services/skin";
 
 export const Explore = () => {
 
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const source = searchParams.get("source");
 
     const goSkins = () => {
         navigate("/skin");
@@ -23,21 +25,42 @@ export const Explore = () => {
     }
 
     const sendSearchSkin = () => {
-        searchSkin(search).then(data => {
-            setSkins(data);
-        })
+
+        if (source === "skin") {
+            searchSkin(search).then(data => {
+                setSkins(data);
+            })
+        }else {
+            getSkinbyName(search).then(data => {
+                setSkins(data);
+            })
+        }
     }
 
     const addSkin = () => {
-        const skin = {
-            name: skins.name,
-            image: skins.images.icon,
-            totalWins: 0
+
+        if (source === "skin") {
+            const skin = {
+                name: skins.name,
+                image: skins.images.icon,
+                totalWins: 0
+            }
+            createSkin(skin).then(data => {
+                navigate("/skin");
+            })
+        }else {
+            const skinSeason = {
+                name: skins.name,
+                image: skins.image,
+                wins: 0,
+                seasonID: source
+            }
+            createSkinSeason(skinSeason).then(data => {
+                navigate(`/seasons/${source}`);
+            })
         }
-        createSkin(skin).then(data => {
-            navigate("/skin");
-        })
     }
+
 
 
     return (
@@ -66,16 +89,18 @@ export const Explore = () => {
             </section>
 
             <section className="w-full flex justify-center mt-8">
-                    {skins ?  (
+                    {skins && (skins.images?.icon || skins.image)  ?  (
                         <div className="w-11/12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
                             <div key={skins.id} className="bg-[#2b2b2b] rounded-xl p-4">
-                                <img src={skins.images.icon}/>
+                                <img src={skins.images?.icon || skins.image}/>
                                 <h1 className="text-white font-bold text-xl text-center mt-4">{skins.name}</h1>
-                                <div className="flex justify-center mt-4">
-                                    <button className="font-bold text-white w-32 bg-sky-600 p-2 cursor-pointer rounded-xl"
-                                    onClick={addSkin}
-                                    >+ Skin</button>
-                                </div>
+                                    <div className="flex justify-center mt-4">
+                                        <button className="font-bold text-white w-32 bg-sky-600 p-2 cursor-pointer rounded-xl"
+                                        onClick={addSkin}
+                                        >
+                                        {source === "skin" ? "+ Skin" : "Add to Season"}
+                                        </button>
+                                    </div>
                             </div>
                         </div>
                     ): (
