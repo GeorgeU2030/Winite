@@ -76,8 +76,19 @@ export const Home = () => {
                     {seasons.map(season => (
                         <div key={season.id} className="bg-[#2b2b2b] rounded-xl p-4 cursor-pointer" onClick={() => goToDetails(season.id)}>
                             <img src={season.image} alt={season.title} className="w-full h-60 object-cover rounded-xl" />
-                            <h1 className="text-white font-bold mt-4">{season.title}</h1>
-                            <p className="text-white mt-2">{season.wins}</p>
+                            
+                            <div className="flex flex-row justify-between">
+                              <div className="flex flex-col">
+                                <h1 className="text-white font-bold mt-4">{season.title}</h1>
+                                <p className="text-white mt-2">{season.wins}</p>
+                              </div>
+                          {season.bestSkin.name &&
+                            <div className="flex flex-row items-center gap-3">
+                              <h1 className="font-bold text-white">{season.bestSkin.name}</h1>
+                              <img src={season.bestSkin.image} alt="icon" className="h-16 w-16" />
+                            </div>
+                          }
+                            </div>
                         </div>
                     ))}
                 </div>

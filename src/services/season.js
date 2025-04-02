@@ -45,3 +45,19 @@ export const getOneSeason = async (seasonId) => {
         console.error(error);
     }
 }
+
+export const updateBestSkin = async (seasonId, bestSkin) => {
+    try {
+        const response = await fetch(`${API_URL}/seasons/${seasonId}/best-skin`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(bestSkin)
+        });
+        const data = await response.json();
+        return data;
+    }catch(error) {
+        console.error(error);
+    }
+}

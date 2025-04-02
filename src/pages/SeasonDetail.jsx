@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getOneSeason } from "../services/season";
+import { getOneSeason, updateBestSkin } from "../services/season";
 import { updateWins } from "../services/skin";
 
 export const SeasonDetail = () => {
@@ -39,6 +39,19 @@ export const SeasonDetail = () => {
                 }
                 return s;
             }))
+            getOneSeason(seasonId).then(data => {
+                setSeason(data.season);
+              setSkins(data.skins);
+            })
+        })
+    }
+    
+    const endSeason = () => { 
+        const bestSkin = {
+          bestSkinID: skins[0].id,
+        }
+        updateBestSkin(seasonId, bestSkin).then(data => {
+          navigate("/");
         })
     }
 
@@ -48,11 +61,11 @@ export const SeasonDetail = () => {
             return;
         }else {
             getOneSeason(seasonId).then(data => {
-                setSeason(data);
-                setSkins(data.skinSeason);
+                setSeason(data.season);
+                setSkins(data.skins);
             })
         }
-    },[skins])
+    },[])
 
     return (
         <div className="min-h-screen bg-black">
@@ -77,7 +90,12 @@ export const SeasonDetail = () => {
             </section>
             }
 
-            <section className="w-full flex justify-end mt-8">
+            <section className="w-full flex justify-end mt-8 gap-4">
+                    <button className="font-bold text-white w-48 bg-sky-600 cursor-pointer rounded-xl p-2"
+                    onClick={endSeason}
+                    >
+                    End Season
+                    </button>
                     <button className="font-bold text-black mr-16 w-48 bg-yellow-300 p-2 cursor-pointer rounded-xl"
                     onClick={goExplore}
                     >Add a Skin</button>
